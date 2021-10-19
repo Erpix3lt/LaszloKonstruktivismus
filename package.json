@@ -7,5 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Max Richter, Max Schmalenbach",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "ogl": "^0.0.76"
+  }
 }
