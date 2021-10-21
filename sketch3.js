@@ -31,12 +31,12 @@ const fragment = /* glsl */ `
 
         varying vec2 vUv;
 
-        const float grungeIntensity = 0.25;
+        const float grungeIntensity = 0.2;
 
         void main() {
             vec3 tex = texture2D(uGrunge, vUv).rgb;
             gl_FragColor.rgb = uColor*(1.0+tex*grungeIntensity-grungeIntensity/2.0);
-            gl_FragColor.a = 0.4;
+            gl_FragColor.a = 0.7;
         }
     `;
 
@@ -71,11 +71,12 @@ export default function (wrapper) {
   const renderer = new Renderer({
     dpr: 2,
     antialias: true,
+    alpha: true,
     width: window.innerWidth / 2,
   });
   const gl = renderer.gl;
   wrapper.appendChild(gl.canvas);
-  gl.clearColor(0.06, 0.06, 0.06, 1);
+  gl.clearColor(0, 0, 0, 0);
 
   const camera = new Camera(gl, { fov: 35 });
   camera.position.set(0, 0, 10);

@@ -45,6 +45,28 @@ h2 {
 
 #sketch-wrapper {
   display: grid;
-  grid-template-rows: repeat(auto);
+  place-content: center;
   row-gap: 5vh;
+}
+
+#c3 {
+  width: fit-content;
+  position: relative;
+  background: radial-gradient(rgba(0, 0, 0, 0.9), rgb(0, 0, 0));
+  background-blend-mode: soft-light;
+}
+
+#c3::after {
+  content: "";
+  position: absolute;
+  /* background-color: black; */
+  background-image: url("textures/grunge_01.jpg");
+  background-blend-mode: soft-light;
+  opacity: 0.5;
+  left: 0px;
+  background-size: 50%;
+  top: 0px;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
 }
