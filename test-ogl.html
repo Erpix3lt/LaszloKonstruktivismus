@@ -66,33 +66,39 @@
             const scene = new Transform();
             scene.rotation.x = Math.PI / 2
 
-            const fixedCamera = true;
+            const fixedCamera = false;
 
             let polar = 1 + Math.random();
             let azimuth = -1 + Math.random() * 2;
 
-            const controls = new Orbit(camera, { minDistance: 8, maxDistance: 10, minPolarAngle: fixedCamera ? polar : 1, maxPolarAngle: fixedCamera ? polar : 2, minAzimuthAngle: fixedCamera ? azimuth : -1, maxAzimuthAngle: fixedCamera ? azimuth : 1 });
+            const controls = new Orbit(camera, { minDistance: fixedCamera ? 10 : 8, maxDistance: 10, minPolarAngle: fixedCamera ? polar : 1, maxPolarAngle: fixedCamera ? polar : 2, minAzimuthAngle: fixedCamera ? azimuth : -1, maxAzimuthAngle: fixedCamera ? azimuth : 1 });
 
-            (async () => {
-                const gltf = await GLTFLoader.load(gl, `assets/Konstrukt_01.glb`);
-                const s = gltf.scene || gltf.scenes[0];
-                s.forEach((root) => {
-                    root.setParent(scene);
-                    root.traverse((node) => {
-                        if (node.program) {
-                            node.program = new Program(gl, {
-                                vertex,
-                                fragment,
-                                uniforms: {
-                                    uColor: {
-                                        value: new Vec3(Math.random(), Math.random(), Math.random())
+            const colors = ["BFB033", "212120",
+                "8F8053",
+                "BAB5A8",
+                "A20504"]
+
+                (async () => {
+                    const gltf = await GLTFLoader.load(gl, `assets/Konstrukt_01.glb`);
+                    const s = gltf.scene || gltf.scenes[0];
+                    s.forEach((root) => {
+                        root.setParent(scene);
+                        root.traverse((node) => {
+                            if (node.program) {
+                                node.program = new Program(gl, {
+                                    vertex,
+                                    fragment,
+                                    transparent: true,
+                                    uniforms: {
+                                        uColor: {
+                                            value: new Vec3(Math.random(), Math.random(), Math.random())
+                                        }
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
+                        });
                     });
-                });
-            })()
+                })()
 
             requestAnimationFrame(update);
             function update() {
