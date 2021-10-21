@@ -10,12 +10,17 @@
 
     <title>OGL • Torus</title>
     <link href="assets/main.css" rel="stylesheet" />
+    <style>
+        body {
+            color: white
+        }
+    </style>
 </head>
 
 <body>
     <div class="Info">Laszlo</div>
     <script type="module">
-        import { Renderer, Camera, Orbit, Transform, GLTFLoader, Program, Torus, Mesh } from 'https://unpkg.com/ogl';
+        import { Renderer, Camera, Orbit, Transform, GLTFLoader, Program, Torus, Mesh, Vec3 } from 'https://unpkg.com/ogl';
 
         const vertex = /* glsl */ `
                 attribute vec3 position;
@@ -25,10 +30,7 @@
                 uniform mat4 modelViewMatrix;
                 uniform mat4 projectionMatrix;
 
-                varying vec3 vNormal;
-
                 void main() {
-                    vNormal = normalize(normalMatrix * normal);
                     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
                 }
             `;
@@ -36,11 +38,11 @@
         const fragment = /* glsl */ `
                 precision highp float;
 
-                varying vec3 vNormal;
+                uniform vec3 uColor;
 
                 void main() {
-                    gl_FragColor.rgb = normalize(vNormal);
-                    gl_FragColor.a = 1.0;
+                    gl_FragColor.rgb = uColor;
+                    gl_FragColor.a = 0.4;
                 }
             `;
 
@@ -48,10 +50,10 @@
             const renderer = new Renderer({ dpr: window.devicePixelRatio || 1 });
             const gl = renderer.gl;
             document.body.appendChild(gl.canvas);
-            gl.clearColor(1, 1, 1, 1);
+            gl.clearColor(0, 0, 0, 1);
 
             const camera = new Camera(gl, { fov: 35 });
-            camera.position.set(0, 3, 0);
+            camera.position.set(0, 0, 10);
             camera.lookAt([0, 0, 0]);
 
             function resize() {
@@ -62,24 +64,39 @@
             resize();
 
             const scene = new Transform();
-            const controls = new Orbit(camera);
+            scene.rotation.x = Math.PI / 2
 
-            const program = new Program(gl, {
-                vertex,
-                fragment,
-            });
+            const fixedCamera = true;
+
+            let polar = 1 + Math.random();
+            let azimuth = -1 + Math.random() * 2;
+
+            const controls = new Orbit(camera, { minDistance: 8, maxDistance: 10, minPolarAngle: fixedCamera ? polar : 1, maxPolarAngle: fixedCamera ? polar : 2, minAzimuthAngle: fixedCamera ? azimuth : -1, maxAzimuthAngle: fixedCamera ? azimuth : 1 });
 
             (async () => {
                 const gltf = await GLTFLoader.load(gl, `assets/Konstrukt_01.glb`);
-                gltf.nodes.forEach(node => {
-                    node.setParent(scene)
-                })
+                const s = gltf.scene || gltf.scenes[0];
+                s.forEach((root) => {
+                    root.setParent(scene);
+                    root.traverse((node) => {
+                        if (node.program) {
+                            node.program = new Program(gl, {
+                                vertex,
+                                fragment,
+                                uniforms: {
+                                    uColor: {
+                                        value: new Vec3(Math.random(), Math.random(), Math.random())
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
             })()
 
             requestAnimationFrame(update);
             function update() {
                 requestAnimationFrame(update);
-
 
                 controls.update();
 
