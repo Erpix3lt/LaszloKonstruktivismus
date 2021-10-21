@@ -1,0 +1,14 @@
+{
+  "name": "laszlo-moholy-nagy-3d",
+  "version": "1.0.0",
+  "description": "3D-visualization",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Max Richter, Max Schmalenbach",
+  "license": "ISC",
+  "dependencies": {
+    "ogl": "^0.0.76"
+  }
+}
