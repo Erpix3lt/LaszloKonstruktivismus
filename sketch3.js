@@ -97,22 +97,6 @@ export default function (wrapper) {
   window.s = scene;
   camParent.setParent(scene);
 
-  const fixedCamera = false;
-
-  let polar = 1 + Math.random();
-  let azimuth = -1 + Math.random() * 2;
-
-  // const controls = new Orbit(camera, {
-  //   enableZoom: false,
-  //   element: wrapper,
-  //   minDistance: fixedCamera ? 10 : 8,
-  //   maxDistance: 10,
-  //   minPolarAngle: fixedCamera ? polar : 1,
-  //   maxPolarAngle: fixedCamera ? polar : 2,
-  //   minAzimuthAngle: fixedCamera ? azimuth : -1,
-  //   maxAzimuthAngle: fixedCamera ? azimuth : 1,
-  // });
-
   (async () => {
     const gltf = await GLTFLoader.load(gl, `assets/Konstrukt_01.glb`);
     const s = gltf.scene || gltf.scenes[0];
