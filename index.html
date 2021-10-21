@@ -13,7 +13,7 @@
         <link href="assets/main.css" rel="stylesheet" />
     </head>
     <body>
-        <div class="Info">Torus</div>
+        <div class="Info">Laszlo</div>
         <script type="module">
             import { Renderer, Camera, Orbit, Transform, Program, Torus, Mesh } from 'https://unpkg.com/ogl';
 
@@ -79,6 +79,12 @@
                 console.log(torusGeometry);
 
                 const torus = new Mesh(gl, { geometry: torusGeometry, program });
+                torus.setParent(scene);
+
+                const torus1 = new Mesh(gl, { geometry: torusGeometry, program });
+                torus.setParent(scene);
+
+                const torus2 = new Mesh(gl, { geometry: torusGeometry, program });
                 torus.setParent(scene);
 
                 requestAnimationFrame(update);
