@@ -62,7 +62,6 @@ const lerp = (a, b, alpha) => a * alpha + b * (1 - alpha);
 const random = (v = 1) => (Math.random() - 0.5) * v;
 
 export default function (wrapper) {
-  const colorScheme = pickRandom(colors);
 
   wrapper.addEventListener("mousemove", ({ clientX, clientY }) => {
     mx = clientX / window.innerWidth - 0.5;
@@ -129,7 +128,9 @@ export default function (wrapper) {
       .fill(null)
       .map(() => pickRandom(konstrukte));
 
-    newKonstrukte.forEach((node) => {
+		const colorScheme = pickRandom(colors);
+    
+		newKonstrukte.forEach((node) => {
       node.position.x = random(5);
       node.position.y = random(1);
       node.position.z = random(5);
